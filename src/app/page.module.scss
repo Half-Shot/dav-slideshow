@@ -18,7 +18,6 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  padding: 6rem;
   filter: blur(50px);
 }
 
@@ -31,8 +30,29 @@
 .infobox {
   position: absolute;
   bottom: 1em;
-  right: 2em;
+  right: 3em;
   user-select: none;
-  color: rgb(209, 209, 209);
+  color: rgb(230, 230, 230);
+  mix-blend-mode: screen;
   font-weight: 600;
+
+  p {
+    margin: 0;
+  }
+
+  hr {
+    filter: invert(100%);
+  }
+
+}
+
+.time {
+  font-size: 3em;
+  border-bottom: 1px solid  rgb(209, 209, 209);
+}
+
+.date {
+  margin-left: 2rem;
+  font-weight: 400;
+  font-size: 6rem;
 }

@@ -1,5 +1,5 @@
 'use client';
-import styles from './page.module.css'
+import styles from './page.module.scss'
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { GridLoader } from 'react-spinners';
 import exifr from 'exifr';
@@ -29,6 +29,9 @@ function parseDateTimeFromExif(data: {306: string, CreateDate: Date}): luxon.Dat
     return dt?.invalidReason === null ? dt : undefined;
 }
 
+const RECHECK_INTERVAL_MS = 60000;
+
+
 export default function Home() {
     const [images, setImages] = useState<string[]|null>(null);
     const [imageIndex, setImageIndex] = useState<number>(-1);
@@ -36,9 +39,10 @@ export default function Home() {
     const [exifData, setExifData] = useState<{CreateDate?: luxon.DateTime}|null>();
     const [loadError, setLoadError] = useState<string|null>(null);
     const [ETag, setETag] = useState<string>("");
+    const [currentTime, setCurrentTime] = useState<{date: string, time: string, minute: number}|null>();
     const preloadImageRef = useRef<HTMLImageElement>(null);
     const params = useSearchParams();
-    const intervalMs = useMemo(() => parseInt(params.get('interval_ms') ?? '15000'), [params])
+    const intervalMs = useMemo(() => parseInt(params.get('interval_ms') ?? '15000'), [params]);
 
     useEffect(() => {
         const fetchNewImages = () => fetch("/api/images").then(r => {
@@ -79,7 +83,7 @@ export default function Home() {
         const t = setTimeout(() => {
             console.log("Refetching Album");
             fetchNewImages();
-        }, 60000);
+        }, RECHECK_INTERVAL_MS);
         return () => clearTimeout(t);
     }, []);
 
@@ -107,7 +111,6 @@ export default function Home() {
         preloadImageRef.current.src = nextImage;
     }, [imageIndex]);
 
-
     // Periodically rotate the image
     useEffect(() => {
         if (!intervalMs) {
@@ -123,6 +126,20 @@ export default function Home() {
         return () => clearTimeout(t);
     }, [imageIndex, intervalMs]);
 
+    useEffect(() => {
+        const t = setInterval(() => {
+            const now = luxon.DateTime.now();
+            if (currentTime?.minute !== now.minute) {
+                setCurrentTime({
+                    date: now.toFormat('DD'),
+                    time: now.toFormat('t'),
+                    minute: now.minute,
+                });
+            }
+        }, 1000);
+        return () => clearInterval(t);
+    })
+
     return <main className={[styles.main,fontStyle.className].join(' ')}>
         {!currentImageSrc && <div className={styles.loader}>
             <GridLoader color="#ffffff" speedMultiplier={loadError ? 0.1 : 1} />
@@ -133,7 +150,11 @@ export default function Home() {
         </div>}
         {currentImageSrc && <img className={styles.image} src={currentImageSrc}></img>}
         {exifData && <div className={styles.infobox}>
-            {exifData.CreateDate?.toLocaleString(luxon.DateTime.DATE_FULL)}
+            {currentTime && <p className={styles.time}>
+                {currentTime.time}
+                <span className={styles.date}>{currentTime.date}</span>
+            </p>}
+            {exifData.CreateDate && <p className='takenDate'>Taken on {exifData.CreateDate?.toLocaleString(luxon.DateTime.DATE_FULL)}</p>}
         </div>}
     </main>;
 }
