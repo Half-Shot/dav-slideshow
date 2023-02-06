@@ -1,3 +1,6 @@
+dav-slideshow
+=============
+
 This is a self contained webapp to show an instant slideshow of photos on a WebDAV share. Currently, this has been tested
 against Nextcloud though support for other providers can be added.
 
@@ -18,4 +21,4 @@ Then to run the app, simply install the dependencies and build the application.
 yarn
 yarn build
 yarn start
-```
+``` 
