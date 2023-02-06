@@ -30,9 +30,9 @@
 
 .infobox {
   position: absolute;
-  bottom: 2em;
-  right: 10em;
+  bottom: 1em;
+  right: 2em;
   user-select: none;
-  mix-blend-mode: difference;
+  color: rgb(209, 209, 209);
   font-weight: 600;
 }
