@@ -1,6 +1,6 @@
 import { XMLParser } from 'fast-xml-parser';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import nextcloudClient, { Album } from './ncClient';
+import nextcloudClient, { Album } from '../../ncClient';
 import { createHash } from 'node:crypto';
 
 interface PropStat {

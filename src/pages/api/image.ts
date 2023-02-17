@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import nextcloudClient from './ncClient';
+import nextcloudClient from '../../ncClient';
 
 export const config = {
     api: {
