@@ -2,6 +2,7 @@ import { XMLParser } from 'fast-xml-parser';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import nextcloudClient, { Album } from '../../ncClient';
 import { createHash } from 'node:crypto';
+import { ErrorResponse, ImagesApiResponse } from '@/api';
 
 interface PropStat {
   'd:prop': Record<string, unknown>,
@@ -19,15 +20,11 @@ interface GetAlbumResponse {
   }
 }
 
-interface ErrorResponse {
-  error: string;
-}
-
 
 
 export default function handler(
   _req: NextApiRequest,
-  res: NextApiResponse<string[]|ErrorResponse>
+  res: NextApiResponse<ImagesApiResponse[]|ErrorResponse>
 ) {
     /**
      * Dear reader, the WebDAV API is utterly awful to anyone with a scrap of sanity. I don't know if this is unique to
@@ -74,7 +71,13 @@ export default function handler(
             const contentType = props["d:getcontenttype"] as string|undefined;
             return !!contentType?.startsWith("image/");
         });
-        const urls = images.map(imgData => `/api/image?img=` + imgData['d:href'].split('/').pop());
+        const urls = images.map(imgData => {
+            const imgName = imgData['d:href'].split('/').pop();
+            return {
+                img: `/api/image/${imgName}`,
+                exif: `/api/exif/${imgName}`,
+            }
+        });
         const hashUrls = createHash('md5').update(urls.join(',')).digest().toString('hex');
         res.setHeader('ETag', hashUrls);
         res.status(200).json(urls);

@@ -14,6 +14,7 @@ Photo by [Bright Ice](https://www.flickr.com/people/159934952@N05/)
  - Webapp doesn't require the user to authenticate (ideal for dashboards like Home Assistant).
  - Automatically rechecks album periodically.
  - Parses the capture date straight from the image and presents it.
+ - Automatically transcodes to WebP if you have the optional `sharp` package installed (and your browser supports it).
 
 ## Getting started
 
