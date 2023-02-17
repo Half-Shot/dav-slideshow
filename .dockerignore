@@ -2,6 +2,7 @@ Dockerfile
 .dockerignore
 node_modules
 README.md
+demo.webp
 .next
 .git
 .env*
