@@ -8,7 +8,7 @@ against Nextcloud though support for other providers can be added.
 
 ![demo image](./demo.webp)
 
-Photo by [Bright Ice](https://www.flickr.com/people/159934952@N05/)
+Photo by [Raymond Minarro](https://www.flickr.com/photos/rescalona/)
 
  - Basic support for images in a Nextcloud album.
  - Webapp doesn't require the user to authenticate (ideal for dashboards like Home Assistant).
