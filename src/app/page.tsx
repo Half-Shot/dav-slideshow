@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import styles from './page.module.scss'
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -23,7 +24,7 @@ function parseDateTimeFromExif(data: {306: string, CreateDate: Date}): luxon.Dat
         dt = luxon.DateTime.fromJSDate(data.CreateDate);
     }
     else if (data["306"]) {
-        // The only source I can find on this format is https://www.cipa.jp/std/documents/e/DC-008-2012_E.pdf.
+        // Sourced from https://www.cipa.jp/std/documents/e/DC-008-2012_E.pdf.
         dt = luxon.DateTime.fromFormat(data["306"], 'yyyy:LL:dd HH:mm:ss')
     }
     return dt?.invalidReason === null ? dt : undefined;
@@ -85,7 +86,7 @@ export default function Home() {
             fetchNewImages();
         }, RECHECK_INTERVAL_MS);
         return () => clearTimeout(t);
-    }, []);
+    });
 
     // When a new image is selected, fetch it.
     useEffect(() => {
@@ -109,7 +110,7 @@ export default function Home() {
             })
         }, { once: true });
         preloadImageRef.current.src = nextImage;
-    }, [imageIndex]);
+    }, [imageIndex, images]);
 
     // Periodically rotate the image
     useEffect(() => {
@@ -124,7 +125,7 @@ export default function Home() {
             setImageIndex(nextIndex < images.length ? nextIndex : 0);
         }, intervalMs);
         return () => clearTimeout(t);
-    }, [imageIndex, intervalMs]);
+    }, [imageIndex, intervalMs, images]);
 
     useEffect(() => {
         const t = setInterval(() => {
@@ -145,10 +146,10 @@ export default function Home() {
             <GridLoader color="#ffffff" speedMultiplier={loadError ? 0.1 : 1} />
             {loadError && <p>{loadError}</p>}
         </div>}
-        <img ref={preloadImageRef} width="0px"/>
+        <img ref={preloadImageRef} alt="" width="0px"/>
         {currentImageSrc && <div className={styles.blur} style={{"background": `url(${currentImageSrc})`}}>
         </div>}
-        {currentImageSrc && <img className={styles.image} src={currentImageSrc}></img>}
+        {currentImageSrc && <img className={styles.image} src={currentImageSrc} alt="Slideshow image"></img>}
         {exifData && <div className={styles.infobox}>
             {currentTime && <p className={styles.time}>
                 {currentTime.time}
