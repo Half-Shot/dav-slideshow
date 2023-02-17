@@ -17,6 +17,9 @@ You must edit the sample configuration in `.env.example` and rename it to `.env`
 
 Then to run the app, simply install the dependencies and build the application.
 
+**Note:** This project uses Yarn v3 for package management. You may need to run `corepack enable`
+to get the right version of Yarn.
+
 ```sh
 yarn
 yarn build
