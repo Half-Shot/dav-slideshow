@@ -1,0 +1,7 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    // We don't optimise because we have our own algorithm.
+    "@next/next/no-img-element": "off"
+  }
+}
