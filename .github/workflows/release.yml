@@ -25,4 +25,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/half-shot/dav-slideshow:${{ github.ref }},ghcr.io/half-shot/dav-slideshow:latest
+          tags: ghcr.io/half-shot/dav-slideshow:${{ github.ref_name }},ghcr.io/half-shot/dav-slideshow:latest
