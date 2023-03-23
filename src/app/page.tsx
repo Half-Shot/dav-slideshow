@@ -30,7 +30,7 @@ export default function Home() {
     const [currentTime, setCurrentTime] = useState<{date: string, time: string, minute: number}|null>();
     const preloadImageRef = useRef<HTMLImageElement>(null);
     const params = useSearchParams();
-    const intervalMs = useMemo(() => parseInt(params.get('interval_ms') ?? '15000'), [params]);
+    const intervalMs = useMemo(() => parseInt(params?.get('interval_ms') ?? '15000'), [params]);
 
     useEffect(() => {
         const abortionController = new AbortController();
